@@ -1,3 +1,8 @@
+/**
+ * Derank class
+ */
+
+
 package supremebot;
 
 import net.dv8tion.jda.api.entities.Member;
