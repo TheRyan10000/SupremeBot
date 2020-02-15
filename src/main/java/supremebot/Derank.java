@@ -74,11 +74,11 @@ public class Derank extends ListenerAdapter {
                     }
                 } else if (message[0].equals(">>rank") && message[1].equals("channel"))
                 {
-                    for (Member u : event.getChannel().getMembers())
+                    for (Member u : event.getJDA().getGuildChannelById(message[2]).getMembers())
                     {
-                        if (!message[2].isEmpty())
+                        if (!message[3].isEmpty())
                         {
-                            event.getGuild().addRoleToMember(u.getId(), event.getJDA().getRoleById(message[2])).queue();
+                            event.getGuild().addRoleToMember(u.getId(), event.getJDA().getRoleById(message[3])).queue();
                         }
                     }
                 }
@@ -86,7 +86,7 @@ public class Derank extends ListenerAdapter {
 
                 if (message[0].equals(">>man")) {
                     event.getChannel().sendMessage("```>>derank all [server/channel] [if channel, channel ID] \n" +
-                            ">>rank all roleID\n" +
+                            ">>rank [all/channel] [if channel, channel ID] roleID\n" +
                             ">>move channel fromChannelID toChannelID ```").queue();
                 }
             }
