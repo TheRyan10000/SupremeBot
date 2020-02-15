@@ -47,23 +47,38 @@ public class Derank extends ListenerAdapter {
                 if (message[0].equals(">>derank") && message[1].equals("all") && message[2].equals("server")) {
                     for (Member u : event.getGuild().getMembers()) {
                         for (Role ur : u.getRoles()) {
-                            if (ur.getName().equals("Bot Controller")) {
+                            if (ur.getName().equals("Bot Controller"))
+                            {
                                 event.getJDA().getUserById(u.getId()).openPrivateChannel().queue(privateChannel ->
                                         privateChannel.sendMessage("Your rank has been preserved").queue());
-                            } else if (!u.getUser().isBot()) {
+                            } else if (!u.getUser().isBot())
+                            {
                                 event.getGuild().removeRoleFromMember(u, ur).queue();
                             }
                         }
                     }
                 }
 
-                if (message[0].equals(">>rank") && message[1].equals("all")) {
+                if (message[0].equals(">>rank") && message[1].equals("all"))
+                {
                     event.getMessage().delete().queue();
-                    for (Member u : event.getGuild().getMembers()) {
-                        if (message[2] != null) {
+                    for (Member u : event.getGuild().getMembers())
+                    {
+                        if (!message[2].isEmpty())
+                        {
                             event.getGuild().addRoleToMember(u.getId(), event.getJDA().getRoleById(message[2])).queue();
-                        } else {
+                        } else
+                        {
                             throw new IllegalArgumentException("Message[2] null!");
+                        }
+                    }
+                } else if (message[0].equals(">>rank") && message[1].equals("channel"))
+                {
+                    for (Member u : event.getChannel().getMembers())
+                    {
+                        if (!message[2].isEmpty())
+                        {
+                            event.getGuild().addRoleToMember(u.getId(), event.getJDA().getRoleById(message[2])).queue();
                         }
                     }
                 }

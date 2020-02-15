@@ -7,49 +7,62 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import javax.annotation.Nonnull;
 
 
-public class AdminCommands extends ListenerAdapter {
+public class AdminCommands extends ListenerAdapter
+{
 
     public static boolean derank = false;
     public static String derankChannel = "";
 
     @Override
-    public void onGuildMessageReceived(@Nonnull GuildMessageReceivedEvent event) {
+    public void onGuildMessageReceived(@Nonnull GuildMessageReceivedEvent event)
+    {
         String[] message = event.getMessage().getContentRaw().split(" ");
 
 
-        if (message[0].equals(">>strike")) {
+        if (message[0].equals(">>strike"))
+        {
 
         }
-        for (Role r : event.getMember().getRoles()) {
-            if (r.getName().equals("Bot Controller")) {
-                if (message[0].equals(">>derank")) {
+        for (Role r : event.getMember().getRoles())
+        {
+            if (r.getName().equals("Bot Controller"))
+            {
+                if (message[0].equals(">>derank"))
+                {
                     AdminCommands.derank = true;
                     AdminCommands.derankChannel = message[1];
 
 
                 }
-                if (message[0].equals("derank") && message[1].equals("off")) {
+                if (message[0].equals("derank") && message[1].equals("off"))
+                {
                     derank = false;
                     derankChannel = "";
                 }
             }
-            if (message[0].equals("!ban")) {
+            if (message[0].equals("!ban"))
+            {
                 event.getJDA().getUserById(message[1]);
                 event.getChannel().sendMessage
-                        (event.getJDA().getUserById(message[1]).getName() + " has been banned " +
+                        (event.getJDA().getUserById(message[1]).getName() +
+                                " has been banned " +
                                 "for " + message[2] + " days").queue();
                 if (message[2].isEmpty())
                     message[2] = "7";
-                event.getGuild().ban(event.getJDA().getUserById(message[1]), Integer.parseInt(message[2])).queue();
+                event.getGuild().ban(event.getJDA().getUserById(message[1]),
+                        Integer.parseInt(message[2])).queue();
             }
 
-            if (message[0].equals("!shutdown")) {
+            if (message[0].equals("!shutdown"))
+            {
                 event.getChannel().sendMessage("Bot shut down started by " +
                         event.getMember().getEffectiveName()).queue();
-                try {
+                try
+                {
                     Thread.sleep(1000);
                     System.exit(1);
-                } catch (InterruptedException i) {
+                } catch (InterruptedException i)
+                {
                     i.printStackTrace();
                 }
 
@@ -59,7 +72,9 @@ public class AdminCommands extends ListenerAdapter {
 //            {
 //                if (!(event.getAuthor().isBot()))
 //                {
-//                    event.getChannel().sendMessage("You are not permitted to use moderation commands!").queue();
+//                    event.getChannel().sendMessage
+//                    ("You are not permitted to use moderation commands!")
+//                    .queue();
 //                }
 //            }
     }
