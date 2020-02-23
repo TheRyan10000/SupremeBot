@@ -1,5 +1,6 @@
 package supremebot;
 
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -19,6 +20,7 @@ public class AdminCommands extends ListenerAdapter
         String[] message = event.getMessage().getContentRaw().split(" ");
 
 
+
         if (message[0].equals(">>strike"))
         {
 
@@ -27,6 +29,34 @@ public class AdminCommands extends ListenerAdapter
         {
             if (r.getName().equals("Bot Controller"))
             {
+                if (message[0].equals(">>man") && message[1].equals("adm"))
+                {
+                    event.getAuthor().openPrivateChannel().queue(privateChannel -> privateChannel.sendMessage
+                            (("```>>derank all [server/channel] [if channel, channel ID] \n" +
+                                    ">>rank [all/channel] [if channel, channel ID] roleID\n" +
+                                    ">>move channel fromChannelID toChannelID\n" +
+                                    ">>derank user [userID]\n" +
+                                    "to talk in Senate channel: >>senate [message here]" +
+                                    " ```")).queue());
+                }
+
+                if (message[0].equals(">>senate"))
+                {
+                    event.getMessage().delete().queue();
+                    String temp = event.getMessage().getContentRaw();
+                    event.getJDA().getTextChannelById("678853211758657536").sendMessage(temp.substring(8)).queue();
+                }
+
+                if (message[0].equals(">>derank") && message[1].equals("user"))
+                {
+                    event.getMessage().delete().queue();
+                    Member user = event.getGuild().getMemberById(message[2]);
+                    for (Role userRoles : user.getJDA().getRoles())
+                    {
+                        event.getGuild().removeRoleFromMember(user, userRoles).queue();
+                    }
+                }
+
                 if (message[0].equals(">>derank"))
                 {
                     AdminCommands.derank = true;
@@ -40,7 +70,7 @@ public class AdminCommands extends ListenerAdapter
                     derankChannel = "";
                 }
             }
-            if (message[0].equals("!ban"))
+            if (message[0].equals(">>ban"))
             {
                 event.getJDA().getUserById(message[1]);
                 event.getChannel().sendMessage

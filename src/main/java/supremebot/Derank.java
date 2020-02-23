@@ -24,15 +24,35 @@ public class Derank extends ListenerAdapter {
         for (Role r : event.getMember().getRoles()) {
             if (r.getName().equals("Bot Controller")) {
 
+                if (message[0].equals(">>nick") && message[1].equals("all"))
+                {
+                    for (Member u : event.getGuild().getMembers())
+                    {
+                        event.getMessage().delete().queue();
+                        u.modifyNickname(message[2]).queue();
+                    }
+                }
 
-                if (message[0].equals(">>move") && message[1].equals("channel")) {
+                if (message[0].equals(">>nick") && message[1].equals("reset"))
+                {
                     event.getMessage().delete().queue();
-                    for (Member u : event.getGuild().getGuildChannelById(message[2]).getMembers()) {
+                    for (Member u : event.getGuild().getMembers())
+                    {
+                        u.modifyNickname(null).queue();
+                    }
+                }
+
+                if (message[0].equals(">>move") && message[1].equals("channel"))
+                {
+                    event.getMessage().delete().queue();
+                    for (Member u : event.getGuild().getGuildChannelById(message[2]).getMembers())
+                    {
                         event.getGuild().moveVoiceMember(u, event.getGuild().getVoiceChannelById(message[3])).queue();
                     }
                 }
 
-                if (message[0].equals(">>derank") && message[1].equals("all") && message[2].equals("channel")) {
+                if (message[0].equals(">>derank") && message[1].equals("all") && message[2].equals("channel"))
+                {
                     event.getMessage().delete().queue();
                     for (Member u : event.getGuild().getGuildChannelById(message[3]).getMembers()) {
                         for (Role ur : u.getRoles()) {
@@ -84,7 +104,8 @@ public class Derank extends ListenerAdapter {
                 }
 
 
-                if (message[0].equals(">>man")) {
+                if (message[0].equals(">>man") && message[1].isEmpty())
+                {
                     event.getChannel().sendMessage("```>>derank all [server/channel] [if channel, channel ID] \n" +
                             ">>rank [all/channel] [if channel, channel ID] roleID\n" +
                             ">>move channel fromChannelID toChannelID ```").queue();
